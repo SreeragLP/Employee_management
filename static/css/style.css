@@ -72,3 +72,77 @@ h1, h2 {
     border-radius: 5px;
     font-size: 13px;
 }
+
+
+/* Home Page Styles */
+.home-page {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    padding: 20px;
+}
+
+.home-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Button Container */
+.home-buttons {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Form Styling */
+.home-buttons form {
+    display: inline-block;
+}
+
+/* All Buttons: Blue */
+.btn {
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background-color: #007bff; /* Blue color */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+
+
+/* dynamic form */
+
+/* Two-column layout */
+.container {
+    max-width: 900px;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+/* Left: Form section */
+.form-section {
+    flex: 1;
+    padding: 15px;
+}
+
+/* Form box with black border */
+.form-box {
+    width: 100%;
+    min-height: 200px;
+    padding: 15px;
+    border: 2px solid black; /* Black border around the form */
+    background: #f8f9fa;
+}

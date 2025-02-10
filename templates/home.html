@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">  <!-- Connect CSS -->
+</head>
+<body class="home-page">
+    <h1 class="home-title">Welcome to the Home Page</h1>
+
+    <div class="home-buttons">
+        <form action="{% url 'dashboard:dashboard' %}" method="get">
+            <button type="submit" class="btn">Dashboard</button>
+        </form>
+        <form action="{% url 'dashboard:dynamic_forms' %}" method="get">
+            <button type="submit" class="btn">Dynamic Form Creation</button>
+        </form>
+        <form action="{% url 'dashboard:employee_creation' %}" method="get">
+            <button type="submit" class="btn">Employee Creation</button>
+        </form>
+    </div>
+
+</body>
+</html>
