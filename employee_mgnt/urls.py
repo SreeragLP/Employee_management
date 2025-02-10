@@ -25,4 +25,8 @@ urlpatterns = [
     path('api/auth/', include('accounts.urls')),
     path('dashboard/', include('dashboard.urls')),
 
+
+    path('api/employee/', include('employee_crud.urls')),
+
+
 ]
