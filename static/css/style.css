@@ -1,0 +1,74 @@
+body {
+    background-color: white;
+    color: black;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+
+.field-group {
+    display: flex;
+    gap: 10px;
+}
+.remove-btn {
+    font-weight: bold;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+/* Form container */
+.form-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+/* Form card */
+.form-card {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    transition: transform 0.3s ease-in-out;
+}
+
+
+.form-card h3 {
+    margin: 0;
+    color: #333;
+    font-size: 18px;
+}
+
+.form-card p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #555;
+}
+
+.form-card ul {
+    list-style: none;
+    padding: 0;
+}
+
+.form-card li {
+    background: #f9f9f9;
+    padding: 8px;
+    margin: 5px 0;
+    border-radius: 5px;
+    font-size: 13px;
+}
