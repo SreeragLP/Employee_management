@@ -11,7 +11,10 @@
 
     <h1>Welcome to the Dashboard!</h1>
 
-    <!-- 🔹 Search & Filter -->
+<a href="{% url 'home' %}" class="home-button">Home</a>
+
+
+    <!-- Search & Filter -->
     <div class="search-filter">
         <input type="text" id="searchInput" placeholder="Search..." onkeyup="filterForms()">
         <select id="filterField" onchange="filterForms()">
@@ -35,7 +38,7 @@
                         <li data-key="{{ key }}" class="form-field"><strong>{{ key }}:</strong> {{ value }}</li>
                     {% endfor %}
                 </ul>
-                <!-- 🔹 Delete Button -->
+                <!-- Delete Button -->
                 <form action="{% url 'dashboard:delete_form' form.id %}" method="POST">
                     {% csrf_token %}
                     <button type="submit">Delete</button>
