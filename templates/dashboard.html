@@ -9,47 +9,47 @@
 </head>
 <body>
 
-    <h1>Welcome to the Dashboard!</h1>
+<h1>Welcome to the Dashboard!</h1>
 
 <a href="{% url 'home' %}" class="home-button">Home</a>
 
 
-    <!-- Search & Filter -->
-    <div class="search-filter">
-        <input type="text" id="searchInput" placeholder="Search..." onkeyup="filterForms()">
-        <select id="filterField" onchange="filterForms()">
-            <option value="">All Fields</option>
-            {% for field in field_names %}
-                <option value="{{ field }}">{{ field }}</option>
-            {% endfor %}
-        </select>
-    </div>
-
-    <h2>Submitted Forms</h2>
-
-    <div class="form-container" id="formList">
-        {% for form in submitted_forms %}
-            <div class="form-card">
-                <h3>Form ID: {{ form.form_id }}</h3>
-                <br>
-                <strong>Details:</strong>
-                <ul>
-                    {% for key, value in form.data.items %}
-                        <li data-key="{{ key }}" class="form-field"><strong>{{ key }}:</strong> {{ value }}</li>
-                    {% endfor %}
-                </ul>
-                <!-- Delete Button -->
-                <form action="{% url 'dashboard:delete_form' form.id %}" method="POST">
-                    {% csrf_token %}
-                    <button type="submit">Delete</button>
-                </form>
-            </div>
-        {% empty %}
-            <p style="text-align: center; color: #777;">No forms submitted yet.</p>
+<!-- Search & Filter -->
+<div class="search-filter">
+    <input type="text" id="searchInput" placeholder="Search..." onkeyup="filterForms()">
+    <select id="filterField" onchange="filterForms()">
+        <option value="">All Fields</option>
+        {% for field in field_names %}
+        <option value="{{ field }}">{{ field }}</option>
         {% endfor %}
-    </div>
+    </select>
+</div>
 
-    <script src="{% static 'js/script.js' %}"></script>
+<h2>Submitted Forms</h2>
+
+<div class="form-container" id="formList">
+    {% for form in submitted_forms %}
+    <div class="form-card">
+        <h3>Form ID: {{ form.form_id }}</h3>
+        <br>
+        <strong>Details:</strong>
+        <ul>
+            {% for key, value in form.data.items %}
+            <li data-key="{{ key }}" class="form-field"><strong>{{ key }}:</strong> {{ value }}</li>
+            {% endfor %}
+        </ul>
+        <!-- Delete Button -->
+        <form action="{% url 'dashboard:delete_form' form.id %}" method="POST">
+            {% csrf_token %}
+            <button type="submit">Delete</button>
+        </form>
+    </div>
+    {% empty %}
+    <p style="text-align: center; color: #777;">No forms submitted yet.</p>
+    {% endfor %}
+</div>
+
+<script src="{% static 'js/script.js' %}"></script>
 
 <script>
     function filterForms() {

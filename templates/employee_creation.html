@@ -13,126 +13,126 @@
 
 <a href="{% url 'home' %}" class="home-button">Home</a>
 
-    <h2 class="text-center mb-4">Employee Creation</h2>
+<h2 class="text-center mb-4">Employee Creation</h2>
 
-    <!-- Dropdown for selecting a form -->
-    <div class="mb-3">
-        <label for="formSelect" class="form-label">Select Your Form:</label>
-        <select id="formSelect" class="form-select">
-            <option value="">-- Select a Form --</option>
-            {% for form in forms %}
-                <option value="{{ form.id }}">Form {{ form.id }}</option>
-            {% endfor %}
-        </select>
+<!-- Dropdown for selecting a form -->
+<div class="mb-3">
+    <label for="formSelect" class="form-label">Select Your Form:</label>
+    <select id="formSelect" class="form-select">
+        <option value="">-- Select a Form --</option>
+        {% for form in forms %}
+        <option value="{{ form.id }}">Form {{ form.id }}</option>
+        {% endfor %}
+    </select>
+</div>
+
+<!-- OK Button to load form -->
+<button id="loadFormBtn" class="btn btn-primary">OK</button>
+
+<form id="employeeForm" class="mt-4">
+    <div id="formFields">
+        <!-- Dynamic form fields will appear here -->
     </div>
+    <button type="button" id="saveBtn" class="btn btn-success mt-3" style="display: none;">Save</button>
+</form>
 
-    <!-- OK Button to load form -->
-    <button id="loadFormBtn" class="btn btn-primary">OK</button>
+<script>
+    $(document).ready(function() {
+        $('#loadFormBtn').click(function() {
+            var formId = $('#formSelect').val();
+            if (formId) {
+                $.ajax({
+                    url: `/dashboard/get-form-fields/${formId}/`,
+                    method: 'GET',
+                    success: function(response) {
+                        if (response.fields) {
+                            var htmlContent = "<h3>Form Fields</h3>";
+                            response.fields.forEach(function(field) {
+                                htmlContent += `<label class="form-label">${field.label}</label>`;
 
-    <form id="employeeForm" class="mt-4">
-        <div id="formFields">
-            <!-- Dynamic form fields will appear here -->
-        </div>
-        <button type="button" id="saveBtn" class="btn btn-success mt-3" style="display: none;">Save</button>
-    </form>
+                                // Generate input fields based on type
+                                if (field.inputType === "text") {
+                                    htmlContent += `<input type="text" name="${field.name}" class="form-control" required>`;
+                                } else if (field.inputType === "number") {
+                                    htmlContent += `<input type="number" name="${field.name}" class="form-control" required>`;
+                                } else if (field.inputType === "date") {
+                                    htmlContent += `<input type="date" name="${field.name}" class="form-control" required>`;
+                                } else if (field.inputType === "email") {
+                                    htmlContent += `<input type="email" name="${field.name}" class="form-control" required>`;
+                                } else if (field.inputType === "password") {
+                                    htmlContent += `<input type="password" name="${field.name}" class="form-control" required>`;
+                                } else if (field.inputType === "checkbox") {
+                                    htmlContent += `<input type="checkbox" name="${field.name}" class="form-check-input">`;
+                                } else {
+                                    htmlContent += `<input type="text" name="${field.name}" class="form-control" required>`;
+                                }
 
-    <script>
-        $(document).ready(function() {
-            $('#loadFormBtn').click(function() {
-                var formId = $('#formSelect').val();
-                if (formId) {
-                    $.ajax({
-                        url: `/dashboard/get-form-fields/${formId}/`,
-                        method: 'GET',
-                        success: function(response) {
-                            if (response.fields) {
-                                var htmlContent = "<h3>Form Fields</h3>";
-                                response.fields.forEach(function(field) {
-                                    htmlContent += `<label class="form-label">${field.label}</label>`;
+                                htmlContent += "<br>";
+                            });
 
-                                    // Generate input fields based on type
-                                    if (field.inputType === "text") {
-                                        htmlContent += `<input type="text" name="${field.name}" class="form-control" required>`;
-                                    } else if (field.inputType === "number") {
-                                        htmlContent += `<input type="number" name="${field.name}" class="form-control" required>`;
-                                    } else if (field.inputType === "date") {
-                                        htmlContent += `<input type="date" name="${field.name}" class="form-control" required>`;
-                                    } else if (field.inputType === "email") {
-                                        htmlContent += `<input type="email" name="${field.name}" class="form-control" required>`;
-                                    } else if (field.inputType === "password") {
-                                        htmlContent += `<input type="password" name="${field.name}" class="form-control" required>`;
-                                    } else if (field.inputType === "checkbox") {
-                                        htmlContent += `<input type="checkbox" name="${field.name}" class="form-check-input">`;
-                                    } else {
-                                        htmlContent += `<input type="text" name="${field.name}" class="form-control" required>`;
-                                    }
-
-                                    htmlContent += "<br>";
-                                });
-
-                                $('#formFields').html(htmlContent);
-                                $('#saveBtn').show();  // Show save button
-                            } else {
-                                $('#formFields').html('<p class="text-danger">No fields found.</p>');
-                                $('#saveBtn').hide();
-                            }
-                        },
-                        error: function() {
-                            $('#formFields').html('<p class="text-danger">Error loading form fields.</p>');
+                            $('#formFields').html(htmlContent);
+                            $('#saveBtn').show();  // Show save button
+                        } else {
+                            $('#formFields').html('<p class="text-danger">No fields found.</p>');
                             $('#saveBtn').hide();
                         }
-                    });
-                } else {
-                    $('#formFields').html('<p class="text-danger">Please select a form.</p>');
-                    $('#saveBtn').hide();
+                    },
+                    error: function() {
+                        $('#formFields').html('<p class="text-danger">Error loading form fields.</p>');
+                        $('#saveBtn').hide();
+                    }
+                });
+            } else {
+                $('#formFields').html('<p class="text-danger">Please select a form.</p>');
+                $('#saveBtn').hide();
+            }
+        });
+
+        // Save button AJAX request
+        $('#saveBtn').click(function() {
+            var formData = {};
+
+            $('#employeeForm').find('input, select').each(function() {
+                var fieldName = $(this).attr('name');  // Ensure we get the correct field name
+                var label = $(this).prev('label').text().trim(); // Get the corresponding label text
+                var inputType = $(this).attr('type');
+                var value;
+
+                if (fieldName) {  // Only add if the field has a valid name
+                    if (inputType === 'checkbox') {
+                        value = $(this).is(':checked');
+                    } else {
+                        value = $(this).val();
+                    }
+
+                    // Store data as {label: value}
+                    formData[label] = value;
                 }
             });
 
-            // Save button AJAX request
-            $('#saveBtn').click(function() {
-                var formData = {};
+            console.log("Sending data:", formData); // Debugging: Check correct data format
 
-                $('#employeeForm').find('input, select').each(function() {
-                    var fieldName = $(this).attr('name');  // Ensure we get the correct field name
-                    var label = $(this).prev('label').text().trim(); // Get the corresponding label text
-                    var inputType = $(this).attr('type');
-                    var value;
-
-                    if (fieldName) {  // Only add if the field has a valid name
-                        if (inputType === 'checkbox') {
-                            value = $(this).is(':checked');
-                        } else {
-                            value = $(this).val();
-                        }
-
-                        // Store data as {label: value}
-                        formData[label] = value;
-                    }
-                });
-
-                console.log("Sending data:", formData); // Debugging: Check correct data format
-
-                $.ajax({
-                    url: '/dashboard/save-form/',
-                    method: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(formData),
-                    headers: {
-                        'X-CSRFToken': '{{ csrf_token }}'
-                    },
-                    success: function(response) {
-                        alert(response.message);
-                        $('#employeeForm')[0].reset();
-                        $('#saveBtn').hide();
-                    },
-                    error: function(xhr) {
-                        console.log("Error response:", xhr.responseText);
-                        alert('Error saving form data.');
-                    }
-                });
+            $.ajax({
+                url: '/dashboard/save-form/',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(formData),
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    alert(response.message);
+                    $('#employeeForm')[0].reset();
+                    $('#saveBtn').hide();
+                },
+                error: function(xhr) {
+                    console.log("Error response:", xhr.responseText);
+                    alert('Error saving form data.');
+                }
             });
         });
-    </script>
+    });
+</script>
 
 </body>
 </html>
