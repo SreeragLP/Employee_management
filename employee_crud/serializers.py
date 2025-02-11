@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from dashboard.models import SubmittedForm  # Make sure it's importing only models
+from dashboard.models import SubmittedForm
 
 class SubmittedFormSerializer(serializers.ModelSerializer):
     class Meta:
